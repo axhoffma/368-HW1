@@ -1,9 +1,14 @@
 #include "sorting.h"
 
 long* Load_From_File(char* Filename, int* Size) {
+    long* longAddress = NULL;
     FILE* fp;
     fp = fopen(Filename, "r"); 
-    long* longAddress = NULL;
+    if(fp == NULL) {
+        *Size = 0;
+        fprintf(stderr, "There was an error while opening the read file\n");
+        return longAddress;
+    }
     //Get length of the file in bytes, return number of integers in array
     fseek(fp, 0, SEEK_END);
     int len = ftell(fp);
@@ -19,6 +24,11 @@ long* Load_From_File(char* Filename, int* Size) {
 int Save_To_File(char* Filename, long* Array, int Size) {
     FILE* fp;
     fp = fopen(Filename, "w");
+    if(fp == NULL) {
+        Size = 0;
+        fprintf(stderr, "There was an error while opening the save file\n");
+        return 0;
+    }
     int numSaved = 0;
     numSaved = fwrite(Array, sizeof(long), Size, fp);
     fclose(fp);
