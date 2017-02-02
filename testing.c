@@ -14,11 +14,19 @@ int main(int argc, char* argv[]) {
     fileName = "testWrite.b";
     int numSaved = Save_To_File(fileName, unsortedArray, Size);
     assert(numSaved == 15);
-    //Test 3: Perform insertion sort on a worst case list
+    //Test 3: Perform insertion sort
     double N_Comp;
     double N_Move;
     Shell_Insertion_Sort(unsortedArray, Size,  &N_Comp, &N_Move);
-    fileName = "testWriteSorted.b";
+    fileName = "testInsertionSorted.b";
+    numSaved = Save_To_File(fileName, unsortedArray, Size);
+    assert(numSaved == 15);
+    //Test 4: Perform selection Sort
+    N_Comp = 0;
+    N_Move = 0;
+    unsortedArray = Load_From_File(fileName, &Size);
+    Shell_Selection_Sort(unsortedArray, Size,  &N_Comp, &N_Move);
+    fileName = "testSelectionSorted.b";
     numSaved = Save_To_File(fileName, unsortedArray, Size);
     assert(numSaved == 15);
     //Test 4: Generate and write the Sequence
