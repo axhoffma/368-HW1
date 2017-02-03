@@ -42,18 +42,22 @@ int Save_To_File(char* Filename, long* Array, int Size) {
 }
 
 void Shell_Insertion_Sort(long* Array, int Size, double* N_Comp, double* N_Move) {
-    for(int i = 1; i < Size; i++) {
-        long x = Array[i];
-        *N_Move++;
-        int j = i - 1;
-        while(j >= 0 && Array[j] > x) {
-            *N_Comp++;
-            Array[j+1] = Array[j];
-            *N_Move++;
-            j--;
+    int sequenceSize = 0;
+    int j;
+    int* sequence = sortingSequence(Size, &sequenceSize);
+    for(int k = sequenceSize - 1; k >= 0; k--) {
+        int gap = sequence[k];
+        for(int i = gap; i < Size; i++) {
+            long x = Array[i];
+            (*N_Move)++;
+            for(j = i; j >= gap && (Array[j - gap] > x); j -= gap) {
+                *N_Comp = *N_Comp + 2;
+                Array[j] = Array[j - gap];
+                (*N_Move)++;
+            }
+            Array[j] = x;
+            (*N_Move)++;
         }
-        Array[j+1] = x;
-        *N_Move++;
     }
     return;
 }
@@ -61,20 +65,25 @@ void Shell_Insertion_Sort(long* Array, int Size, double* N_Comp, double* N_Move)
 void Shell_Selection_Sort(long* Array, int Size, double* N_Comp, double* N_Move) {
     int min;
     int temp;
-    for(int i = 0; i < Size - 1; i++) {
-       min = i;
-       for(int j = i+1; j < Size; j++) {
-           if(Array[j] < Array[min]) {
-               *N_Comp++;
-               min = j;
+    int sequenceSize = 0;
+    int* sequence = sortingSequence(Size, &sequenceSize);
+    for(int k = sequenceSize - 1; k >= 0; k--) {
+        int gap = sequence[k];
+        for(int i = gap; i < Size - 1; i++) {
+           min = i;
+           for(int j = i + gap; j < Size; j+= gap) {
+               if(Array[j] < Array[min]) {
+                   *N_Comp++;
+                   min = j;
+               }
            }
-       }
-       if(min != i) {
-           temp = Array[i];
-           Array[i] = Array[min];
-           Array[min] = temp;
-           *N_Move = *N_Move + 3;
-       }
+           if(min != i) {
+               temp = Array[i];
+               Array[i] = Array[min];
+               Array[min] = temp;
+               *N_Move = *N_Move + 3;
+           }
+        }
     }
     return;
 }
@@ -82,7 +91,6 @@ void Shell_Selection_Sort(long* Array, int Size, double* N_Comp, double* N_Move)
 int Print_Seq(char* Filename, int Size) {
     int sequenceSize = 0;
     int* sequence = sortingSequence(Size, &sequenceSize);
-    printf("%d\n", sequenceSize); //GET RID OF THIS
     FILE* fp;
     fp = fopen(Filename, "w");
     if(fp == NULL) {
@@ -125,12 +133,11 @@ int* sortingSequence(int Size, int* sequenceSize) {
             threePower = power(3, j);
             value = twoPower * threePower;
             if(value < Size) {
-                *sequenceSize++;
-                printf("%d\n", value);
+                (*sequenceSize)++;
             }
         }
     }
-    printf("%d\n", *sequenceSize);
+
     int* sequenceValues = malloc(sizeof(int) * *sequenceSize);
     for(int i = 0; i < maxRow; i++) {
         for(int j = 0; j <= i; j++) {

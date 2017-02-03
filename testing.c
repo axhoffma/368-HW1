@@ -21,6 +21,7 @@ int main(int argc, char* argv[]) {
     fileName = "testInsertionSorted.b";
     numSaved = Save_To_File(fileName, unsortedArray, Size);
     assert(numSaved == 15);
+    free(unsortedArray);
     //Test 4: Perform selection Sort
     N_Comp = 0;
     N_Move = 0;
@@ -33,8 +34,6 @@ int main(int argc, char* argv[]) {
     int sequenceSize = Print_Seq("output.txt", Size);
     assert(Size == 15);
     assert(sequenceSize != 0);
-    //Test 5: Perform selection sort
-    //Test 6: Write Selection Sort to binary file
     free(unsortedArray);
     return EXIT_SUCCESS;
 }
