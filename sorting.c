@@ -73,9 +73,9 @@ void Shell_Selection_Sort(long* Array, int Size, double* N_Comp, double* N_Move)
            min = i;
            for(int j = i + gap; j < Size; j+= gap) {
                if(Array[j] < Array[min]) {
-                   *N_Comp++;
                    min = j;
                }
+               (*N_Comp)++;
            }
            if(min != i) {
                temp = Array[i];
