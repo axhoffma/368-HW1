@@ -59,6 +59,7 @@ void Shell_Insertion_Sort(long* Array, int Size, double* N_Comp, double* N_Move)
             (*N_Move)++;
         }
     }
+    free(sequence);
     return;
 }
 
@@ -85,6 +86,7 @@ void Shell_Selection_Sort(long* Array, int Size, double* N_Comp, double* N_Move)
            }
         }
     }
+    free(sequence);
     return;
 }
 

@@ -53,5 +53,6 @@ int main(int argc, char* argv[]) {
     printf("Number of Moves: %le\n", N_Move);
     printf("I/O time: %le\n", ioTime);
     printf("Sorting time: %le\n", sortTime);
+    free(Array);
     return EXIT_SUCCESS;
 }
