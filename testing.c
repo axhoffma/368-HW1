@@ -30,6 +30,9 @@ int main(int argc, char* argv[]) {
     numSaved = Save_To_File(fileName, unsortedArray, Size);
     assert(numSaved == 15);
     //Test 4: Generate and write the Sequence
+    int sequenceSize = Print_Seq("output.txt", Size);
+    assert(Size == 15);
+    assert(sequenceSize != 0);
     //Test 5: Perform selection sort
     //Test 6: Write Selection Sort to binary file
     free(unsortedArray);

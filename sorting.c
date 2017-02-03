@@ -1,5 +1,10 @@
 #include "sorting.h"
 
+//Need helper function for raising x to the n
+int power(int x, int n);
+//Helper function to generate sequence
+int* sortingSequence(int Size, int* sequenceSize);
+
 long* Load_From_File(char* Filename, int* Size) {
     long* longAddress = NULL;
     FILE* fp;
@@ -21,6 +26,7 @@ long* Load_From_File(char* Filename, int* Size) {
     fclose(fp);
     return longAddress;
 }
+
 int Save_To_File(char* Filename, long* Array, int Size) {
     FILE* fp;
     fp = fopen(Filename, "w");
@@ -34,6 +40,7 @@ int Save_To_File(char* Filename, long* Array, int Size) {
     fclose(fp);
     return numSaved;
 }
+
 void Shell_Insertion_Sort(long* Array, int Size, double* N_Comp, double* N_Move) {
     for(int i = 1; i < Size; i++) {
         long x = Array[i];
@@ -50,6 +57,7 @@ void Shell_Insertion_Sort(long* Array, int Size, double* N_Comp, double* N_Move)
     }
     return;
 }
+
 void Shell_Selection_Sort(long* Array, int Size, double* N_Comp, double* N_Move) {
     int min;
     int temp;
@@ -70,6 +78,70 @@ void Shell_Selection_Sort(long* Array, int Size, double* N_Comp, double* N_Move)
     }
     return;
 }
-/*int Print_Seq(char* Filename, int Size) {
-    return //placeholder;
-} */
+
+int Print_Seq(char* Filename, int Size) {
+    int sequenceSize = 0;
+    int* sequence = sortingSequence(Size, &sequenceSize);
+    printf("%d\n", sequenceSize); //GET RID OF THIS
+    FILE* fp;
+    fp = fopen(Filename, "w");
+    if(fp == NULL) {
+        fprintf(stderr, "There was no txt file to print to");
+        return 0;
+    }
+    for(int i = 0; i < sequenceSize; i++) {
+       fprintf(fp, "%d\n", sequence[i]); 
+    }
+    free(sequence);
+    fclose(fp);
+    return sequenceSize;
+} 
+
+int power(int x, int n) {
+    int num = 1;
+    for(int i = 0; i < n; ++i) {
+        num = num * x;
+    }
+    return num;
+}
+
+int* sortingSequence(int Size, int* sequenceSize) {
+    int twoPower;
+    int threePower;
+    int value;
+    int maxRow = 1;
+    int maxValue = 1;
+    int sequencePlace = 0;
+
+    while(maxValue < Size) {
+        maxValue = maxValue * 2;
+        maxRow++;
+    }
+    maxRow--;
+
+    for(int i = 0; i < maxRow; i++) {
+        for(int j = 0; j <= i; j++) {
+            twoPower = power(2, (i-j));
+            threePower = power(3, j);
+            value = twoPower * threePower;
+            if(value < Size) {
+                *sequenceSize++;
+                printf("%d\n", value);
+            }
+        }
+    }
+    printf("%d\n", *sequenceSize);
+    int* sequenceValues = malloc(sizeof(int) * *sequenceSize);
+    for(int i = 0; i < maxRow; i++) {
+        for(int j = 0; j <= i; j++) {
+            twoPower = power(2, (i-j));
+            threePower = power(3, j);
+            value = twoPower * threePower;
+            if(value < Size) {
+                sequenceValues[sequencePlace] = value;
+                sequencePlace++;
+            }
+        }
+    }
+    return sequenceValues;
+}
