@@ -23,18 +23,21 @@ int main(int argc, char* argv[]) {
     char* sequenceOutput = argv[3];
     char* outputFile = argv[4];
 
+    //track IO clock time
     ioStart = clock();
     long* Array = Load_From_File(inputFile, &Size);
     ioEnd = clock();
     ioTime = (double) (ioEnd - ioStart) / CLOCKS_PER_SEC;
     
     if(sortMethod == 'i') {
+        //Clock sort time
         sortStart = clock();
         Shell_Insertion_Sort(Array, Size, &N_Comp, &N_Move);
         sortEnd = clock();
         sortTime = (double) (sortEnd - sortStart) / CLOCKS_PER_SEC;
     }
     else if(sortMethod == 's') {
+        //Clock sort time
         sortStart = clock();
         Shell_Selection_Sort(Array, Size, &N_Comp, &N_Move);
         sortEnd = clock();
@@ -44,6 +47,7 @@ int main(int argc, char* argv[]) {
         fprintf(stderr, "Not proper sort indication\n");
         return EXIT_FAILURE;
     }
+
     int sequence = Print_Seq(sequenceOutput, Size);
     Save_To_File(outputFile, Array, Size);
     printf("Number of long integers read: %d\n", Size);
